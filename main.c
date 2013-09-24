@@ -32,18 +32,12 @@ int compareStrings(void *p1, void *p2)
 }
 
 int main(int argc, char **argv) {
-  char *buff = malloc(200);
-  FILE *f = fopen(argv[1], "r");
-
   SortedListPtr list = SLCreate(compareInts);
 
-  free(list);
-
-  fread(buff, 1, 200, f);
-  printf("%s\n", buff);
-  fclose(f);
 
 
+
+  SLDestroy(list);
 
   return 0;
 }

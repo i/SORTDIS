@@ -3,17 +3,14 @@
 #include "sorted-list.h"
 
 SortedListPtr SLCreate(CompareFuncT cf) {
-  SortedListPtr list = malloc(sizeof(SortedList));
-  list->cmp = cf;
+  SortedListPtr lp = malloc(sizeof(struct SortedList));
+  lp->cmp = cf;
 
-
-  return list;
+  return lp;
 }
 
 void SLDestroy(SortedListPtr list) {
-  free(list->list);
-
-  return;
+  free(list);
 }
 
 

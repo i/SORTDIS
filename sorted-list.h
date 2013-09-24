@@ -26,13 +26,12 @@ typedef int (*CompareFuncT)(void *, void *);
  * Sorted list type.  You need to fill in the type as part of your
  * implementation.
  */
-struct SortedList_
+struct SortedList
 {
-  *int cmp(void *, void*);
+  int (*cmp)(void *, void*);
 
 };
 
-typedef struct SortedList_ SortedList;
 typedef struct SortedList* SortedListPtr;
 
 
