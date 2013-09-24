@@ -1,5 +1,5 @@
 default:
-	gcc -Wall -Werror -g sorted-list.c main.c -o sorted-list
+	gcc -Wall -Werror -g src/sorted-list.c src/main.c -o sorted-list
 
 clean:
 	rm sorted-list
