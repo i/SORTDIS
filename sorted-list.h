@@ -7,25 +7,6 @@
 #include <stdlib.h>
 
 /*
- * Sorted list type.  You need to fill in the type as part of your implementation.
- */
-struct SortedList
-{
-};
-typedef struct SortedList* SortedListPtr;
-
-
-/*
- * Iterator type for user to "walk" through the list item by item, from
- * beginning to end.  You need to fill in the type as part of your implementation.
- */
-struct SortedListIterator
-{
-};
-typedef struct SortedListIterator* SortedListIteratorPtr;
-
-
-/*
  * When your sorted list is used to store objects of some type, since the
  * type is opaque to you, you will need a comparator function to order
  * the objects in your sorted list.
@@ -41,12 +22,37 @@ typedef struct SortedListIterator* SortedListIteratorPtr;
 
 typedef int (*CompareFuncT)(void *, void *);
 
+/*
+ * Sorted list type.  You need to fill in the type as part of your
+ * implementation.
+ */
+struct SortedList_
+{
+  *int cmp(void *, void*);
+
+};
+
+typedef struct SortedList_ SortedList;
+typedef struct SortedList* SortedListPtr;
+
+
+/*
+ * Iterator type for user to "walk" through the list item by item, from
+ * beginning to end.  You need to fill in the type as part of your implementation.
+ */
+struct SortedListIterator
+{
+};
+
+typedef struct SortedListIterator* SortedListIteratorPtr;
+
+
 
 /*
  * SLCreate creates a new, empty sorted list.  The caller must provide
  * a comparator function that can be used to order objects that will be
  * kept in the list.
- * 
+ *
  * If the function succeeds, it returns a (non-NULL) SortedListT object.
  * Else, it returns NULL.
  *
@@ -89,8 +95,7 @@ int SLInsert(SortedListPtr list, void *newObj);
 int SLRemove(SortedListPtr list, void *newObj);
 
 
-/*
- * SLCreateIterator creates an iterator object that will allow the caller
+/* * SLCreateIterator creates an iterator object that will allow the caller
  * to "walk" through the list from beginning to the end using SLNextItem.
  *
  * If the function succeeds, it returns a non-NULL SortedListIterT object.
