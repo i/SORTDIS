@@ -34,17 +34,28 @@ int compareStrings(void *p1, void *p2)
 int main(int argc, char **argv) {
   SortedListPtr list = SLCreate(compareInts);
 
-  int a = 13;
-  int b = 16;
-  int c = 8;
+  int a = 12;
+  int b = 1;
+  int c = 31;
+  int d = 15;
+  int e = 83;
+  int f = -138;
+  int g = 1;
+
 
   SLInsert(list, &a);
   SLInsert(list, &b);
   SLInsert(list, &c);
+  SLInsert(list, &d);
+  SLInsert(list, &e);
+  SLInsert(list, &f);
+  SLInsert(list, &g);
 
+  printList(list);
 
 
   SLDestroy(list);
 
   return 0;
 }
+

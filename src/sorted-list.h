@@ -15,6 +15,8 @@ struct node_ {
 
 typedef struct node_* node;
 
+node create_node(void *);
+
 /*
  * When your sorted list is used to store objects of some type, since the
  * type is opaque to you, you will need a comparator function to order
@@ -145,5 +147,7 @@ void SLDestroyIterator(SortedListIteratorPtr iter);
  */
 
 void *SLNextItem(SortedListIteratorPtr iter);
+
+void printList(SortedListPtr);
 
 #endif

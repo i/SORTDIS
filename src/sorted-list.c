@@ -1,8 +1,9 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "sorted-list.h"
 
-node create_node(data v) {
+node create_node(void *v) {
   node n = malloc(sizeof(struct node_));
   n->next = NULL;
   n->prev = NULL;
@@ -25,22 +26,36 @@ void SLDestroy(SortedListPtr list) {
 }
 
 
-int SLInsert(SortedListPtr list, void *newObj) {
-  node ptr = list->ll;
+int SLInsert(SortedListPtr list, void *value) {
+  node new_node = create_node(value),
+       ptr      = list->ll,
+       prev     = NULL;;
 
-  if (ptr == NULL) {
-    list->ll = create_node(value);
+  printf("inserting %d\n", *(int*)value);
+
+  if (list->ll == NULL) {
+    printf("inserting %d into new list\n", *(int*)value);//
+    list->ll = new_node;
   }
-  else
-  {
-    for (; ptr != NULL; ptr = ptr->next) 
-    {
-//TODO
+  else {
+    for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
+      if ( list->cmp(value, ptr->val) <= 0) {
+        if (prev == NULL)
+        {
+          new_node->next = ptr;
+          list->ll = new_node;
+        } else {
+          new_node->next = ptr;
+          prev->next = new_node;
+        }
+        return 1;
+      } else {
+        prev = ptr;
+        continue;
+      }
     }
+    prev->next = new_node;
   }
-
-
-
 
   return 1;
 }
@@ -68,3 +83,10 @@ void *SLNextItem(SortedListIteratorPtr iter) {
   return NULL;
 }
 
+void printList(SortedListPtr list) {
+  node ptr;
+
+  for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
+    printf("%d\n", *(int*)ptr->val);
+  }
+}
