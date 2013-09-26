@@ -12,6 +12,10 @@ node create_node(void *v) {
   return n;
 }
 
+void destroy_node(node n) {
+  free(n);
+}
+
 SortedListPtr SLCreate(CompareFuncT cf) {
   SortedListPtr lp = malloc(sizeof(struct SortedList));
 
@@ -22,6 +26,14 @@ SortedListPtr SLCreate(CompareFuncT cf) {
 }
 
 void SLDestroy(SortedListPtr list) {
+  node ptr, t;
+
+  for (ptr = list->ll; ptr != NULL; ) {
+    t = ptr->next;
+    free(ptr);
+    ptr = t;
+  }
+
   free(list);
 }
 
@@ -29,14 +41,12 @@ void SLDestroy(SortedListPtr list) {
 int SLInsert(SortedListPtr list, void *value) {
   node new_node = create_node(value),
        ptr      = list->ll,
-       prev     = NULL;;
-
-  printf("inserting %d\n", *(int*)value);
+       prev     = NULL;
 
   if (list->ll == NULL) {
-    printf("inserting %d into new list\n", *(int*)value);//
     list->ll = new_node;
   }
+
   else {
     for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
       if ( list->cmp(value, ptr->val) <= 0) {
@@ -51,7 +61,6 @@ int SLInsert(SortedListPtr list, void *value) {
         return 1;
       } else {
         prev = ptr;
-        continue;
       }
     }
     prev->next = new_node;
@@ -62,6 +71,22 @@ int SLInsert(SortedListPtr list, void *value) {
 
 
 int SLRemove(SortedListPtr list, void *newObj) {
+  node ptr;
+  node prev = NULL;
+
+  for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
+    if (list->cmp(ptr->val, newObj) == 0) {
+      if (prev == NULL) {
+        list->ll = ptr->next;
+        destroy_node(ptr);
+      } else {
+        prev->next = ptr->next;
+        destroy_node(ptr);
+      }
+      return 1;
+    }
+    prev = ptr;
+  }
 
   return 0;
 }
