@@ -33,7 +33,25 @@ int compareStrings(void *p1, void *p2)
 }
 
 int main(int argc, char **argv) {
+  int i1,i2,i3,i4,i5;
+  double d1, d2, d3, d4, d5;
+  char *s1, *s2, *s3, *s4, *s5;
+  SortedListPtr sl;
+  SortedListIteratorPtr slip;
 
-  return 0;
+  //kk. there's an error. see if you can fix it.
+  //i know what it is
+
+  sl = SLCreate(compareInts);
+
+  i1 = 160;
+  i2 = 42;
+  i3 = 188;
+  i4 = 49;
+  i5 = 1;
+
+
+
+
 }
 

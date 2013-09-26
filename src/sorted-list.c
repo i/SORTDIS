@@ -91,21 +91,25 @@ int SLRemove(SortedListPtr list, void *newObj) {
   return 0;
 }
 
-
+//do we need anything else?
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
+  SortedListIteratorPtr slip = malloc(sizeof(struct SortedListIterator));
+  slip->curr = list->ll;
 
-  return NULL;
+  return slip;
 }
 
 
 void SLDestroyIterator(SortedListIteratorPtr iter) {
-
+  free(iter);
 }
 
 
 void *SLNextItem(SortedListIteratorPtr iter) {
+  void *ret = iter->curr->val;
+  iter->curr = iter->curr->next;
 
-  return NULL;
+  return ret;
 }
 
 void printList(SortedListPtr list) {
