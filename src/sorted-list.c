@@ -21,6 +21,7 @@ SortedListPtr SLCreate(CompareFuncT cf) {
 
   lp->cmp = cf;
   lp->ll  = NULL;
+  lp->iters = NULL;
 
   return lp;
 }
@@ -49,7 +50,7 @@ int SLInsert(SortedListPtr list, void *value) {
 
   else {
     for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
-      if ( list->cmp(value, ptr->val) <= 0) {
+      if ( list->cmp(value, ptr->val) >= 0) {
         if (prev == NULL)
         {
           new_node->next = ptr;
@@ -93,23 +94,34 @@ int SLRemove(SortedListPtr list, void *newObj) {
 
 //do we need anything else?
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
+  node t;
+  node head;
   SortedListIteratorPtr slip = malloc(sizeof(struct SortedListIterator));
-  slip->curr = list->ll;
+  head = create_node(NULL);
+  head->next = list->ll;
+  slip->head = head;
+  slip->curr = head;
+  if (list->iters == NULL) {
+    list->iters = create_node(slip);
+  } else {
+    t = create_node(slip);
+    t->next = list->iters;
+  }
 
   return slip;
 }
 
 
 void SLDestroyIterator(SortedListIteratorPtr iter) {
+  free(iter->head);
   free(iter);
 }
 
 
 void *SLNextItem(SortedListIteratorPtr iter) {
-  void *ret = iter->curr->val;
   iter->curr = iter->curr->next;
 
-  return ret;
+  return iter->curr->val;
 }
 
 void printList(SortedListPtr list) {

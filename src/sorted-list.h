@@ -41,6 +41,7 @@ struct SortedList
 {
   int (*cmp)(void *, void*);
   node ll;
+  node iters;
 };
 
 typedef struct SortedList* SortedListPtr;
@@ -53,6 +54,7 @@ typedef struct SortedList* SortedListPtr;
 struct SortedListIterator
 {
   node curr;
+  node head;
 };
 
 typedef struct SortedListIterator* SortedListIteratorPtr;
