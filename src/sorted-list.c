@@ -35,6 +35,12 @@ void SLDestroy(SortedListPtr list) {
     ptr = t;
   }
 
+  for (ptr = list->iters; ptr != NULL; ) {
+    t = ptr->next;
+    free(ptr);
+    ptr = t;
+  }
+
   free(list);
 }
 
@@ -116,7 +122,6 @@ void SLDestroyIterator(SortedListIteratorPtr iter) {
   free(iter->head);
   free(iter);
 }
-
 
 void *SLNextItem(SortedListIteratorPtr iter) {
   iter->curr = iter->curr->next;
