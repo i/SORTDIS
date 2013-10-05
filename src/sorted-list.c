@@ -56,6 +56,8 @@ int SLInsert(SortedListPtr list, void *value) {
   else {
     for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
       if ( list->cmp(value, ptr->val) >= 0) {
+
+        //means we're at the front of the list
         if (prev == NULL)
         {
           new_node->next = ptr;
@@ -64,11 +66,12 @@ int SLInsert(SortedListPtr list, void *value) {
           new_node->next = ptr;
           prev->next = new_node;
         }
-        break;
+        return 1;
       } else {
         prev = ptr;
       }
     }
+    printf("got to 74\n");
     prev->next = new_node;
   }
 
