@@ -44,7 +44,6 @@ void SLDestroy(SortedListPtr list) {
   free(list);
 }
 
-
 int SLInsert(SortedListPtr list, void *value) {
   node new_node = create_node(value),
        ptr      = list->ll,
@@ -78,6 +77,7 @@ int SLInsert(SortedListPtr list, void *value) {
 
 
 int SLRemove(SortedListPtr list, void *newObj) {
+  SortedListIteratorPtr iter;
   node ptr;
   node prev = NULL;
 
@@ -90,15 +90,25 @@ int SLRemove(SortedListPtr list, void *newObj) {
         prev->next = ptr->next;
         destroy_node(ptr);
       }
-      return 1;
+      break;
     }
     prev = ptr;
+  }
+
+  printf("line 98\n");
+
+  /* gets each iterator node associated with the list */
+  for (ptr = list->iters; ptr != NULL; ptr = ptr->next) {
+    iter = (SortedListIteratorPtr)ptr->val;
+    if (iter->curr->next->val == newObj) {
+      printf("whoooa\n");
+      iter->curr = iter->curr->next;
+    }
   }
 
   return 0;
 }
 
-//do we need anything else?
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
   node t;
   node head;

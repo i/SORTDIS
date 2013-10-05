@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 
   printf("%i\n", *(int*)SLNextItem(slip));
   printf("%i\n", *(int*)SLNextItem(slip));
-  printf("%i\n", *(int*)SLNextItem(slip));
+  SLRemove(sl, &i2);
   printf("%i\n", *(int*)SLNextItem(slip));
 
   SLDestroyIterator(slip);
