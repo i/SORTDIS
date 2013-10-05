@@ -33,7 +33,7 @@ int compareStrings(void *p1, void *p2)
 }
 
 int main(int argc, char **argv) {
-  int i1,i2,i3,i4;
+  int i7,i5,i3,i4;
   /* double d1, d2, d3, d4, d5; */
   /* char *s1, *s2, *s3, *s4; */
 
@@ -42,20 +42,20 @@ int main(int argc, char **argv) {
 
   sl = SLCreate(compareInts);
 
-  i1 = 7;
-  i2 = 5;
+  i7 = 7;
+  i5 = 5;
   i3 = 3;
-  i4 = 7;
+  i4 = 4;
 
-  SLInsert(sl, &i1);
-  SLInsert(sl, &i2);
+  SLInsert(sl, &i7);
+  SLInsert(sl, &i5);
   SLInsert(sl, &i3);
-  SLInsert(sl, &i4);
+
   slip = SLCreateIterator(sl);
 
   printf("%i\n", *(int*)SLNextItem(slip));
   printf("%i\n", *(int*)SLNextItem(slip));
-  SLRemove(sl, &i2);
+  SLInsert(sl, &i4);
   printf("%i\n", *(int*)SLNextItem(slip));
 
   SLDestroyIterator(slip);
