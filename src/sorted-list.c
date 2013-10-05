@@ -136,10 +136,11 @@ void SLDestroyIterator(SortedListIteratorPtr iter) {
 
 void *SLNextItem(SortedListIteratorPtr iter) {
   node t = iter->curr;
+  iter->curr = iter->curr->next;
+
   if (t->val == NULL) {
     free(t);
   }
-  iter->curr = iter->curr->next;
 
   return iter->curr->val;
 }
