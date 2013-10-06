@@ -77,12 +77,24 @@ int SLInsert(SortedListPtr list, void *value) {
 
 int SLRemove(SortedListPtr list, void *newObj) {
   /* SortedListIteratorPtr iter; */
-  node ptr, prev = NULL;
+  node ptr, iterptr, prev = NULL;
+  SortedListIteratorPtr iter;
 
   // Go through the list to find item to delete
   for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
-    // We have found the item to remove
+    // We have found the item to remove if we are
     if (ptr->val == newObj) {
+      
+      // Go through iters to see if anything is 
+      // pointing to this
+      for (iterptr = list->iters; iterptr != NULL; iterptr = iterptr->next) {
+        iter = iterptr->val;
+        if (iter->curr == ptr) {
+          iter->curr = ptr->next;
+        }
+      }
+
+      // Deleteing first note
       if (prev == NULL) {
         list->ll = ptr->next;
         destroy_node(ptr);
