@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
   char *s1, *s2, *s3, *s4, *s5;
 
   SortedListPtr sl;
-  SortedListIteratorPtr slip;
+  /* SortedListIteratorPtr slip; */
 
   sl = SLCreate(compareInts);
 
@@ -58,17 +58,19 @@ int main(int argc, char **argv) {
   printListString(sl);
   SLInsert(sl, s5); // => ['ZZZ', 'WORLD', 'HELLO', 'DOGS']
   printListString(sl);
+  SLRemove(sl, s2); // => ['ZZZ', 'HELLO', 'DOGS']
+  printListString(sl);
 
-  slip = SLCreateIterator(sl);
+  /* slip = SLCreateIterator(sl); */
 
   printf("------------------------------\n");
 
-  printf("%s\n", (char*)SLNextItem(slip));
-  printf("%s\n", (char*)SLNextItem(slip));
-  SLInsert(sl, s4);
-  printf("%s\n", (char*)SLNextItem(slip));
+  /* printf("%s\n", (char*)SLNextItem(slip)); */
+  /* printf("%s\n", (char*)SLNextItem(slip)); */
+  /* SLInsert(sl, s4); */
+  /* printf("%s\n", (char*)SLNextItem(slip)); */
 
-  SLDestroyIterator(slip);
+  /* SLDestroyIterator(slip); */
   SLDestroy(sl);
 
   return 0;

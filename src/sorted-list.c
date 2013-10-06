@@ -43,84 +43,56 @@ void SLDestroy(SortedListPtr list) {
   free(list);
 }
 
-// FIXME: Need to do move and replace method
 int SLInsert(SortedListPtr list, void *value) {
-  int added = 0;
-  //SortedListIteratorPtr iter;
-  node new_node = create_node(value),
-       ptr      = list->ll,
-       prev     = NULL;
+  node new_node = create_node(NULL);
+  node ptr;
 
-  // We're making the first node of the list
+  // If the list is empty, this is the first node
   if (list->ll == NULL) {
+    new_node->val = value;
     list->ll = new_node;
   }
-
   else {
+    // Loop through the list
     for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
-      // We're putting the rest of the list after this node
+      // We have found what item it goes before
       if (list->cmp(value, ptr->val) >= 0) {
-
-        // We're adding to the front of the list.
-        if (prev == NULL) {
-          new_node->next = list->ll;
-          list->ll = new_node;
-          added = 1;
-        } else {
-          new_node->next = ptr;
-          prev->next = new_node;
-          added = 1;
-        }
-        // Break because we added the node and don't need to check
-        // any more nodes.
-        break;
-      } else {
-        prev = ptr;
-        continue;
+        new_node->next = ptr->next;
+        new_node->val = ptr->val;
+        ptr->val = value;
+        ptr->next = new_node;
+        return 1;
+      } 
+      // Item goes at the end of the list 
+      if (ptr->next == NULL) {
+        new_node->val = value;
+        ptr->next = new_node;
+        return 1;
       }
     }
-
-    // If prev is null, it means it never got set.
-    if (!added && prev != NULL)
-      prev->next = new_node;
   }
-
-  /* Everything from this point is for iterators */
-
-  return 1;
+  return 0;
 }
 
 
 int SLRemove(SortedListPtr list, void *newObj) {
-  SortedListIteratorPtr iter;
-  node ptr;
-  node dummy;
-  node prev = NULL;
+  /* SortedListIteratorPtr iter; */
+  node ptr, prev = NULL;
 
+  // Go through the list to find item to delete
   for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
-    if (list->cmp(ptr->val, newObj) == 0) {
+    // We have found the item to remove
+    if (ptr->val == newObj) {
       if (prev == NULL) {
         list->ll = ptr->next;
         destroy_node(ptr);
       } else {
         prev->next = ptr->next;
-        destroy_node(ptr);
-      } break; } prev = ptr; } 
-
-  /* gets each iterator node associated with the list */
-  for (ptr = list->iters; ptr != NULL; ptr = ptr->next) {
-    iter = (SortedListIteratorPtr)ptr->val;
-    if (iter->curr->val == newObj) {
-      dummy = create_node(NULL);
-      dummy->next = iter->curr->next;
-      iter->curr = dummy;
-      break;
+        destroy_node(ptr); 
+      }
     }
-    else if (iter->curr->next->val == newObj) {
-      printf("whoooa\n");
-      iter->curr = iter->curr->next;
-      break;
-    }
+    // Set previous to this node
+    prev = ptr;
   }
 
   return 0;
