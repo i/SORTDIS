@@ -35,7 +35,7 @@ int compareStrings(void *p1, void *p2)
 int main(int argc, char **argv) {
   /* int i7,i5,i3,i4; */
   /* double d1, d2, d3, d4, d5; */
-  char *s1, *s2, *s3, *s4;
+  char *s1, *s2, *s3, *s4, *s5;
 
   SortedListPtr sl;
   SortedListIteratorPtr slip;
@@ -46,12 +46,16 @@ int main(int argc, char **argv) {
   s2 = "World";
   s3 = "Dawgs";
   s4 = "Tacos";
+  s5 = "Zebra";
 
-  SLInsert(sl, s1);
-  SLInsert(sl, s2);
-  SLInsert(sl, s3);
+  SLInsert(sl, s1); // => ['HELLO']
+  SLInsert(sl, s2); // => ['WORLD', 'HELLO']
+  SLInsert(sl, s3); // => ['WORLD', 'HELLO', 'DOGS']
+  SLInsert(sl, s5); // => ['ZZZ', 'WORLD', 'HELLO', 'DOGS']
 
   slip = SLCreateIterator(sl);
+
+  printListString(sl);
 
   printf("%s\n", (char*)SLNextItem(slip));
   printf("%s\n", (char*)SLNextItem(slip));

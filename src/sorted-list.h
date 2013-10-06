@@ -9,7 +9,6 @@
 
 struct node_ {
   struct node_ *next;
-  struct node_ *prev;
   void *val;
 };
 
@@ -55,6 +54,7 @@ struct SortedListIterator
 {
   node curr;
   node head;
+  void *last_val_returned;
 };
 
 typedef struct SortedListIterator* SortedListIteratorPtr;
@@ -150,5 +150,6 @@ void SLDestroyIterator(SortedListIteratorPtr iter);
 void *SLNextItem(SortedListIteratorPtr iter);
 
 void printList(SortedListPtr);
+void printListString(SortedListPtr);
 
 #endif

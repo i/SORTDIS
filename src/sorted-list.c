@@ -6,7 +6,6 @@
 node create_node(void *v) {
   node n = malloc(sizeof(struct node_));
   n->next = NULL;
-  n->prev = NULL;
   n->val = v;
 
   return n;
@@ -49,31 +48,39 @@ int SLInsert(SortedListPtr list, void *value) {
        ptr      = list->ll,
        prev     = NULL;
 
+  // We're making the first node of the list
   if (list->ll == NULL) {
     list->ll = new_node;
   }
 
   else {
     for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
-      if ( list->cmp(value, ptr->val) >= 0) {
+      // We're putting the rest of the list after this node
+      if (list->cmp(value, ptr->val) >= 0) {
 
-        //means we're at the front of the list
-        if (prev == NULL)
-        {
-          new_node->next = ptr;
+        // We're adding to the front of the list.
+        if (prev == NULL) {
+          new_node->next = list->ll;
           list->ll = new_node;
         } else {
           new_node->next = ptr;
           prev->next = new_node;
         }
-        return 1;
+        // Break because we added the node and don't need to check
+        // any more nodes.
+        break;
       } else {
         prev = ptr;
+        continue;
       }
     }
-    printf("got to 74\n");
-    prev->next = new_node;
+
+    // If we've made it this far, we're adding new_node to the end of the list.
+    // If prev is null, it means it never got set.
+    if (prev != NULL)
+      prev->next = new_node;
   }
+
 
   return 1;
 }
@@ -115,13 +122,18 @@ int SLRemove(SortedListPtr list, void *newObj) {
 }
 
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
-  node t;
-  node head;
-  SortedListIteratorPtr slip = malloc(sizeof(struct SortedListIterator));
+  node head, t;
+  SortedListIteratorPtr slip;
+
+  slip = malloc(sizeof(struct SortedListIterator));
   head = create_node(NULL);
+
   head->next = list->ll;
   slip->head = head;
   slip->curr = head;
+
+  // If list->iters is null, it means there are no iterators
+  // associated with the list.
   if (list->iters == NULL) {
     list->iters = create_node(slip);
   } else {
@@ -145,6 +157,7 @@ void *SLNextItem(SortedListIteratorPtr iter) {
     free(t);
   }
 
+  iter->last_val_returned = iter->curr->val;
   return iter->curr->val;
 }
 
@@ -152,6 +165,16 @@ void printList(SortedListPtr list) {
   node ptr;
 
   for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
-    printf("%d\n", *(int*)ptr->val);
+    printf("%d, ", *(int*)ptr->val);
   }
+  printf("\n");
+}
+
+void printListString(SortedListPtr list) {
+  node ptr;
+
+  for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
+    printf("%s, ", (char*)ptr->val);
+  }
+  printf("\n");
 }
