@@ -30,14 +30,12 @@ void SLDestroy(SortedListPtr list) {
 
   for (ptr = list->ll; ptr != NULL; ) {
     t = ptr->next;
-    free(ptr);
+    destroy_node(ptr);
     ptr = t;
   }
 
   for (ptr = list->iters; ptr != NULL; ) {
-    t = ptr->next;
-    free(ptr);
-    ptr = t;
+    SLDestroyIterator(ptr->val);    
   }
 
   free(list);
@@ -115,6 +113,7 @@ SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
   SortedListIteratorPtr slip;
 
   slip = malloc(sizeof(struct SortedListIterator));
+  slip->sl = list;
   slip->curr = list->ll;
 
   // If list->iters is null, it means there are no iterators
@@ -132,6 +131,24 @@ SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
 
 
 void SLDestroyIterator(SortedListIteratorPtr iter) {
+  node ptr, prev = NULL;
+  SortedListIteratorPtr slip;
+  SortedListPtr list = iter->sl;
+
+  for (ptr = list->iters; ptr != NULL; ptr = ptr->next) {
+    slip = ptr->val;
+
+    //DELETE IT
+    if (slip == iter) {
+      if (prev == NULL) {
+        list->iters = list->iters->next;  
+      } else {
+        prev->next = ptr->next;
+      }
+    }
+    prev = ptr;
+  }
+
   free(iter);
 }
 
