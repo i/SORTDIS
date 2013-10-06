@@ -44,6 +44,8 @@ void SLDestroy(SortedListPtr list) {
 }
 
 int SLInsert(SortedListPtr list, void *value) {
+  int added = 0;
+  SortedListIteratorPtr iter;
   node new_node = create_node(value),
        ptr      = list->ll,
        prev     = NULL;
@@ -62,9 +64,11 @@ int SLInsert(SortedListPtr list, void *value) {
         if (prev == NULL) {
           new_node->next = list->ll;
           list->ll = new_node;
+          added = 1;
         } else {
           new_node->next = ptr;
           prev->next = new_node;
+          added = 1;
         }
         // Break because we added the node and don't need to check
         // any more nodes.
@@ -75,10 +79,20 @@ int SLInsert(SortedListPtr list, void *value) {
       }
     }
 
-    // If we've made it this far, we're adding new_node to the end of the list.
     // If prev is null, it means it never got set.
-    if (prev != NULL)
+    if (!added && prev != NULL)
       prev->next = new_node;
+  }
+
+  /* Everything from this point is for iterators */
+
+  // Every ptr is a node that holds an iterator as its val
+  for (ptr = list->iters; ptr != NULL; ptr = ptr->next) {
+    iter = ptr->val;
+    // 
+    if (iter->last_val_returned == NULL) {
+
+    }
   }
 
 
@@ -129,7 +143,6 @@ SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
   head = create_node(NULL);
 
   head->next = list->ll;
-  slip->head = head;
   slip->curr = head;
 
   // If list->iters is null, it means there are no iterators

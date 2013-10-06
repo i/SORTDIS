@@ -53,7 +53,6 @@ typedef struct SortedList* SortedListPtr;
 struct SortedListIterator
 {
   node curr;
-  node head;
   void *last_val_returned;
 };
 

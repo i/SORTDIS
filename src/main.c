@@ -49,13 +49,19 @@ int main(int argc, char **argv) {
   s5 = "Zebra";
 
   SLInsert(sl, s1); // => ['HELLO']
+  printListString(sl);
   SLInsert(sl, s2); // => ['WORLD', 'HELLO']
+  printListString(sl);
   SLInsert(sl, s3); // => ['WORLD', 'HELLO', 'DOGS']
+  printListString(sl);
+  SLInsert(sl, s4); // => ['WORLD', 'HELLO', 'DOGS']
+  printListString(sl);
   SLInsert(sl, s5); // => ['ZZZ', 'WORLD', 'HELLO', 'DOGS']
+  printListString(sl);
 
   slip = SLCreateIterator(sl);
 
-  printListString(sl);
+  printf("------------------------------\n");
 
   printf("%s\n", (char*)SLNextItem(slip));
   printf("%s\n", (char*)SLNextItem(slip));
