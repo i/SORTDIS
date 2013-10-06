@@ -43,9 +43,10 @@ void SLDestroy(SortedListPtr list) {
   free(list);
 }
 
+// FIXME: Need to do move and replace method
 int SLInsert(SortedListPtr list, void *value) {
   int added = 0;
-  SortedListIteratorPtr iter;
+  //SortedListIteratorPtr iter;
   node new_node = create_node(value),
        ptr      = list->ll,
        prev     = NULL;
@@ -85,16 +86,6 @@ int SLInsert(SortedListPtr list, void *value) {
   }
 
   /* Everything from this point is for iterators */
-
-  // Every ptr is a node that holds an iterator as its val
-  for (ptr = list->iters; ptr != NULL; ptr = ptr->next) {
-    iter = ptr->val;
-    // 
-    if (iter->last_val_returned == NULL) {
-
-    }
-  }
-
 
   return 1;
 }
@@ -136,14 +127,11 @@ int SLRemove(SortedListPtr list, void *newObj) {
 }
 
 SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
-  node head, t;
+  node t;
   SortedListIteratorPtr slip;
 
   slip = malloc(sizeof(struct SortedListIterator));
-  head = create_node(NULL);
-
-  head->next = list->ll;
-  slip->curr = head;
+  slip->curr = list->ll;
 
   // If list->iters is null, it means there are no iterators
   // associated with the list.
@@ -152,6 +140,7 @@ SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
   } else {
     t = create_node(slip);
     t->next = list->iters;
+    list->iters = t;
   }
 
   return slip;
@@ -163,16 +152,13 @@ void SLDestroyIterator(SortedListIteratorPtr iter) {
 }
 
 void *SLNextItem(SortedListIteratorPtr iter) {
-  node t = iter->curr;
+  void *return_me = iter->curr->val;
   iter->curr = iter->curr->next;
+  iter->last_val_returned = return_me;
 
-  if (t->val == NULL) {
-    free(t);
-  }
-
-  iter->last_val_returned = iter->curr->val;
-  return iter->curr->val;
+  return return_me;
 }
+
 
 void printList(SortedListPtr list) {
   node ptr;
