@@ -35,7 +35,7 @@ void SLDestroy(SortedListPtr list) {
   }
 
   for (ptr = list->iters; ptr != NULL; ) {
-    SLDestroyIterator(ptr->val);    
+    SLDestroyIterator(ptr->val);
   }
 
   free(list);
@@ -45,10 +45,16 @@ int SLInsert(SortedListPtr list, void *value) {
   node new_node = create_node(NULL);
   node ptr;
 
+  // If list doesn't exist, return 0.
+  if (list == NULL || value == NULL) {
+    return 0;
+  }
+
   // If the list is empty, this is the first node
   if (list->ll == NULL) {
     new_node->val = value;
     list->ll = new_node;
+    return 1;
   }
   else {
     // Loop through the list
@@ -60,8 +66,8 @@ int SLInsert(SortedListPtr list, void *value) {
         ptr->val = value;
         ptr->next = new_node;
         return 1;
-      } 
-      // Item goes at the end of the list 
+      }
+      // Item goes at the end of the list
       if (ptr->next == NULL) {
         new_node->val = value;
         ptr->next = new_node;
@@ -78,12 +84,16 @@ int SLRemove(SortedListPtr list, void *newObj) {
   node ptr, iterptr, prev = NULL;
   SortedListIteratorPtr iter;
 
+  if (list == NULL || newObj == NULL) {
+    return 0;
+  }
+
   // Go through the list to find item to delete
   for (ptr = list->ll; ptr != NULL; ptr = ptr->next) {
     // We have found the item to remove if we are
-    if (ptr->val == newObj) {
-      
-      // Go through iters to see if anything is 
+    if (list->cmp(newObj, ptr->val) == 0) {
+
+      // Go through iters to see if anything is
       // pointing to this
       for (iterptr = list->iters; iterptr != NULL; iterptr = iterptr->next) {
         iter = iterptr->val;
@@ -96,9 +106,11 @@ int SLRemove(SortedListPtr list, void *newObj) {
       if (prev == NULL) {
         list->ll = ptr->next;
         destroy_node(ptr);
+        return 1;
       } else {
         prev->next = ptr->next;
-        destroy_node(ptr); 
+        destroy_node(ptr);
+        return 1;
       }
     }
     // Set previous to this node
@@ -141,7 +153,7 @@ void SLDestroyIterator(SortedListIteratorPtr iter) {
     //DELETE IT
     if (slip == iter) {
       if (prev == NULL) {
-        list->iters = list->iters->next;  
+        list->iters = list->iters->next;
       } else {
         prev->next = ptr->next;
       }
@@ -153,6 +165,9 @@ void SLDestroyIterator(SortedListIteratorPtr iter) {
 }
 
 void *SLNextItem(SortedListIteratorPtr iter) {
+  if (iter->curr == NULL)
+    return NULL;
+
   void *return_me = iter->curr->val;
   iter->curr = iter->curr->next;
   iter->last_val_returned = return_me;
